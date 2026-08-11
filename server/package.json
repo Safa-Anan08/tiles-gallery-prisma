@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "prisma:generate": "prisma generate --schema=../prisma/schema.prisma",
-    "build": "prisma generate --schema=../prisma/schema.prisma && node -e \"if(require('fs').existsSync('../prisma/generated/client')) require('fs').cpSync('../prisma/generated/client', './node_modules/@prisma/client', {recursive: true, force: true})\" && tsc",
+    "prisma:deploy": "prisma migrate deploy --schema=../prisma/schema.prisma",
+    "build": "prisma migrate deploy --schema=../prisma/schema.prisma && prisma generate --schema=../prisma/schema.prisma && node -e \"if(require('fs').existsSync('../prisma/generated/client')) require('fs').cpSync('../prisma/generated/client', './node_modules/@prisma/client', {recursive: true, force: true})\" && tsc",
     "start": "node dist/server.js"
+
 
 
 
