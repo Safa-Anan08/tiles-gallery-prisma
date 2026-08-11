@@ -1,9 +1,7 @@
 import prisma from "../../lib/prisma";
 
 export class CartService {
-  /**
-   * Fetches cart items for a user by email with tile details
-   */
+
   static async getCartByEmail(email: string) {
     if (!email) return [];
 
@@ -28,9 +26,6 @@ export class CartService {
     }));
   }
 
-  /**
-   * Adds an item to cart or increments quantity
-   */
   static async addToCart(userEmail: string, tileId: string) {
     const user = await prisma.user.findFirst({
       where: { email: userEmail, isDeleted: false },
@@ -59,9 +54,7 @@ export class CartService {
     });
   }
 
-  /**
-   * Removes an item from cart (soft delete semantics)
-   */
+
   static async deleteFromCart(userEmail: string, tileId: string) {
     const user = await prisma.user.findFirst({
       where: { email: userEmail },

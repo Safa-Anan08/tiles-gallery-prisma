@@ -1,11 +1,11 @@
 import prisma from "../../lib/prisma";
 import { Tile, TileStatus } from "@prisma/client";
+
 import { AppError } from "../../errors/appError";
 
+
 export class ProductService {
-  /**
-   * Retrieves all non-deleted tiles ordered by ID ascending
-   */
+
   static async getAllTiles(): Promise<Tile[]> {
     return prisma.tile.findMany({
       where: {
@@ -17,9 +17,7 @@ export class ProductService {
     });
   }
 
-  /**
-   * Retrieves a single tile by ID if not soft-deleted
-   */
+
   static async getTileById(id: string): Promise<Tile | null> {
     const tile = await prisma.tile.findFirst({
       where: {
@@ -35,9 +33,7 @@ export class ProductService {
     return tile;
   }
 
-  /**
-   * Creates a new tile
-   */
+
   static async createTile(data: {
     id: string;
     title: string;
@@ -78,9 +74,7 @@ export class ProductService {
     });
   }
 
-  /**
-   * Updates an existing tile
-   */
+
   static async updateTile(
     id: string,
     data: Partial<{
@@ -105,9 +99,7 @@ export class ProductService {
     });
   }
 
-  /**
-   * Soft deletes a tile by setting isDeleted = true
-   */
+
   static async deleteTile(id: string): Promise<Tile> {
     await this.getTileById(id);
 

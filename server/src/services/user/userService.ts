@@ -1,10 +1,10 @@
 import prisma from "../../lib/prisma";
 import { User } from "@prisma/client";
 
+
+
 export class UserService {
-  /**
-   * Finds an active user by email
-   */
+
   static async findUserByEmail(email: string): Promise<User | null> {
     return prisma.user.findFirst({
       where: {
@@ -14,9 +14,6 @@ export class UserService {
     });
   }
 
-  /**
-   * Retrieves all users (Admin only, passwordHash excluded)
-   */
   static async getAllUsers() {
     return prisma.user.findMany({
       where: {
@@ -37,9 +34,7 @@ export class UserService {
     });
   }
 
-  /**
-   * Updates user profile (name, image)
-   */
+
   static async updateUserProfile(
     email: string,
     data: { name?: string; image?: string }

@@ -56,11 +56,12 @@ export default function GoogleLoginButton({ onSuccessRedirect = "/" }) {
           window.google.accounts.id.renderButton(googleBtnRef.current, {
             theme: "outline",
             size: "large",
-            width: "100%",
+            width: 350,
             text: "continue_with",
             shape: "pill",
             logo_alignment: "center",
           });
+
           setIsGisRendered(true);
         }
       }

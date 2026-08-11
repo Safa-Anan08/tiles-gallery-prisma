@@ -6,9 +6,7 @@ import { AuthUser, UserRole } from "../../types/auth";
 import { AppError } from "../../errors/appError";
 
 export class AuthService {
-  /**
-   * Generates a signed JWT access token for a given user
-   */
+
   static generateToken(user: { id: string; email: string; role: UserRole }): string {
     return signAccessToken({
       userId: user.id,
@@ -17,9 +15,6 @@ export class AuthService {
     });
   }
 
-  /**
-   * Registers a new user with bcrypt password hash & JWT
-   */
   static async registerUser(data: { name?: string; email: string; password: string }) {
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },
@@ -60,9 +55,6 @@ export class AuthService {
     };
   }
 
-  /**
-   * Authenticates user via bcrypt password check (with Account fallback) & returns JWT
-   */
   static async loginUser(data: { email: string; password: string }) {
     const user = await prisma.user.findFirst({
       where: { email: data.email, isDeleted: false },
@@ -75,15 +67,15 @@ export class AuthService {
 
     let isValidPassword = false;
 
-    // Check direct passwordHash on User model
+
     if (user.passwordHash) {
       isValidPassword = await comparePassword(data.password, user.passwordHash);
     } else if (user.accounts && user.accounts.length > 0) {
-      // Fallback check on Account table for existing Better-Auth accounts
+
       for (const account of user.accounts) {
         if (account.password && (await comparePassword(data.password, account.password))) {
           isValidPassword = true;
-          // Upgrade user to store direct passwordHash
+
           await prisma.user.update({
             where: { id: user.id },
             data: { passwordHash: account.password },
@@ -116,9 +108,7 @@ export class AuthService {
     };
   }
 
-  /**
-   * Authenticates user via Google OAuth ID token verification & returns application JWT
-   */
+
   static async googleLogin(data: { idToken?: string; credential?: string }) {
     const tokenToVerify = data.idToken || data.credential;
     if (!tokenToVerify) {
@@ -170,7 +160,7 @@ export class AuthService {
     const name = payload.name;
     const picture = payload.picture;
 
-    // Find existing active user by googleId or email
+
     let user = await prisma.user.findFirst({
       where: {
         OR: [
@@ -182,7 +172,7 @@ export class AuthService {
     });
 
     if (user) {
-      // Update account details if linking Google account
+
       user = await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -193,7 +183,7 @@ export class AuthService {
         },
       });
     } else {
-      // Create new account with default USER role
+
       user = await prisma.user.create({
         data: {
           email,
@@ -227,9 +217,7 @@ export class AuthService {
     };
   }
 
-  /**
-   * Fetches active current user profile by ID
-   */
+
   static async getUserById(userId: string) {
     const user = await prisma.user.findFirst({
       where: { id: userId, isDeleted: false },

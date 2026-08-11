@@ -1,5 +1,6 @@
 import { Request } from "express";
-import { UserRole, TileStatus } from "../../../prisma/generated/client";
+import { UserRole, TileStatus } from "@prisma/client";
+
 
 export { UserRole, TileStatus };
 
@@ -18,7 +19,14 @@ export interface AuthUser {
   name?: string | null;
 }
 
-// Extend Express Request interface to attach authenticated user
-export interface AuthenticatedRequest extends Request {
+// Extend Express Request interface to attach authenticated user while preserving Express Request properties
+export interface AuthenticatedRequest<
+  P = any,
+  ResBody = any,
+  ReqBody = any,
+  ReqQuery = any,
+  Locals extends Record<string, any> = Record<string, any>
+> extends Request<P, ResBody, ReqBody, ReqQuery, Locals> {
   user?: AuthUser;
 }
+

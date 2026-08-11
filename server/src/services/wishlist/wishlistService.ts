@@ -1,9 +1,7 @@
 import prisma from "../../lib/prisma";
 
 export class WishlistService {
-  /**
-   * Fetches wishlist items for a user by email
-   */
+
   static async getWishlistByEmail(email: string) {
     if (!email) return [];
 
@@ -28,9 +26,7 @@ export class WishlistService {
     }));
   }
 
-  /**
-   * Adds an item to wishlist
-   */
+
   static async addToWishlist(userEmail: string, tileId: string) {
     const user = await prisma.user.findFirst({
       where: { email: userEmail, isDeleted: false },
@@ -57,9 +53,6 @@ export class WishlistService {
     });
   }
 
-  /**
-   * Removes an item from wishlist
-   */
   static async deleteFromWishlist(userEmail: string, tileId: string) {
     const user = await prisma.user.findFirst({
       where: { email: userEmail },
