@@ -11,7 +11,7 @@ const PORT: number = parseInt(process.env.PORT || "5000", 10);
 
 const server = app.listen(PORT, () => {
   console.log("================================================");
-  console.log(`🚀 Tiles Gallery Express Server (SCIC/EJP-13)`);
+  console.log(`🚀 Tiles Gallery Express Server `);
   console.log(`📡 Server running on http://localhost:${PORT}`);
   console.log(`🏥 Health Check: http://localhost:${PORT}/api/health`);
   console.log("================================================");

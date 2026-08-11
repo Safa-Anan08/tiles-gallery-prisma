@@ -13,7 +13,7 @@ datasource db {
 }
 
 // ----------------------------------------------------
-// Enums (SCIC/EJP-13 Requirement)
+// Enums (/EJP-13 Requirement)
 // ----------------------------------------------------
 
 enum UserRole {

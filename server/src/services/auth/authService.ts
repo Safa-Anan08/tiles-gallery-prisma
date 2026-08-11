@@ -16,8 +16,9 @@ export class AuthService {
   }
 
   static async registerUser(data: { name?: string; email: string; password: string }) {
-    const existingUser = await prisma.user.findUnique({
-      where: { email: data.email },
+    const normalizedEmail = data.email.toLowerCase().trim();
+    const existingUser = await prisma.user.findFirst({
+      where: { email: normalizedEmail, isDeleted: false },
     });
 
     if (existingUser) {
@@ -29,7 +30,7 @@ export class AuthService {
     const user = await prisma.user.create({
       data: {
         name: data.name || null,
-        email: data.email,
+        email: normalizedEmail,
         passwordHash: hashedPassword,
         role: UserRole.USER,
         isDeleted: false,
@@ -56,9 +57,9 @@ export class AuthService {
   }
 
   static async loginUser(data: { email: string; password: string }) {
+    const normalizedEmail = data.email.toLowerCase().trim();
     const user = await prisma.user.findFirst({
-      where: { email: data.email, isDeleted: false },
-      include: { accounts: true },
+      where: { email: normalizedEmail, isDeleted: false },
     });
 
     if (!user) {
@@ -67,15 +68,16 @@ export class AuthService {
 
     let isValidPassword = false;
 
-
     if (user.passwordHash) {
       isValidPassword = await comparePassword(data.password, user.passwordHash);
-    } else if (user.accounts && user.accounts.length > 0) {
+    } else {
+      const accounts = await prisma.account.findMany({
+        where: { userId: user.id },
+      }).catch(() => []);
 
-      for (const account of user.accounts) {
+      for (const account of accounts) {
         if (account.password && (await comparePassword(data.password, account.password))) {
           isValidPassword = true;
-
           await prisma.user.update({
             where: { id: user.id },
             data: { passwordHash: account.password },
