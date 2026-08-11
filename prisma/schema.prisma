@@ -1,0 +1,211 @@
+// Prisma Schema for Tiles Gallery (SCIC/EJP-13 Full Compliance)
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------
+// Enums (SCIC/EJP-13 Requirement)
+// ----------------------------------------------------
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum TileStatus {
+  AVAILABLE
+  DISCONTINUED
+  OUT_OF_STOCK
+}
+
+// ----------------------------------------------------
+// User & Authentication Models
+// ----------------------------------------------------
+
+model User {
+  id            String   @id @default(cuid())
+  name          String?
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  role          UserRole @default(USER)
+  passwordHash  String?
+  isDeleted     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions      Session[]
+  accounts      Account[]
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+  reviews       Review[]
+
+  @@index([isDeleted])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}
+
+// ----------------------------------------------------
+// Core Domain Models
+// ----------------------------------------------------
+
+model Tile {
+  id          String     @id
+  title       String
+  description String
+  image       String
+  category    String
+  price       Float
+  currency    String     @default("USD")
+  dimensions  String
+  material    String
+  tags        String[]
+  inStock     Boolean    @default(true)
+  status      TileStatus @default(AVAILABLE)
+  isDeleted   Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+  reviews       Review[]
+
+  @@index([category])
+  @@index([price])
+  @@index([status])
+  @@index([isDeleted])
+  @@map("tiles")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  image       String?
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isDeleted])
+  @@map("categories")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  comment   String
+  userId    String
+  tileId    String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tile Tile @relation(fields: [tileId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tileId])
+  @@index([isDeleted])
+  @@map("reviews")
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  tileId    String
+  quantity  Int      @default(1)
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tile Tile @relation(fields: [tileId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tileId])
+  @@index([userId])
+  @@index([isDeleted])
+  @@map("cart")
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  tileId    String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tile Tile @relation(fields: [tileId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tileId])
+  @@index([userId])
+  @@index([isDeleted])
+  @@map("wishlist")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([isDeleted])
+  @@map("messages")
+}
