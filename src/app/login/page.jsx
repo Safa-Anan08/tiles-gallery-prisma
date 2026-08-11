@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -61,11 +62,13 @@ export default function LoginPage() {
 
           <button
             disabled={loading}
-            className="w-full bg-black text-white py-3 rounded-xl hover:scale-[1.02] transition disabled:opacity-50"
+            className="w-full bg-black text-white py-3 rounded-xl hover:scale-[1.02] transition disabled:opacity-50 font-medium"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        <GoogleLoginButton onSuccessRedirect="/" />
 
         <p className="text-center mt-5 text-sm">
           Don&apos;t have an account?

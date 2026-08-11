@@ -26,6 +26,12 @@ export const meController = asyncHandler(async (req: AuthenticatedRequest, res: 
   return sendSuccessResponse(res, 200, "Current user profile fetched successfully", user);
 });
 
+export const googleController = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const { idToken, credential } = req.body;
+  const result = await AuthService.googleLogin({ idToken, credential });
+  return sendSuccessResponse(res, 200, "Google authentication successful", result);
+});
+
 export const logoutController = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   return sendSuccessResponse(
     res,
@@ -34,3 +40,4 @@ export const logoutController = asyncHandler(async (req: AuthenticatedRequest, r
     null
   );
 });
+

@@ -92,6 +92,17 @@ export function AuthProvider({ children }) {
     return result;
   };
 
+  const googleLogin = async (credential) => {
+    setLoading(true);
+    const result = await authClient.googleLogin(credential);
+    if (result.success) {
+      setUser(result.user);
+      setToken(result.token);
+    }
+    setLoading(false);
+    return result;
+  };
+
   const logout = async () => {
     setLoading(true);
     await authClient.logout();
@@ -109,6 +120,7 @@ export function AuthProvider({ children }) {
         loading,
         login,
         register,
+        googleLogin,
         logout,
         refreshUser,
       }}
@@ -116,6 +128,7 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
+
 }
 
 export function useAuth() {

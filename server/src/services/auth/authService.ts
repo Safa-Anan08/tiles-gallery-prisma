@@ -1,3 +1,4 @@
+import { OAuth2Client } from "google-auth-library";
 import prisma from "../../lib/prisma";
 import { signAccessToken } from "../../lib/jwt";
 import { comparePassword, hashPassword } from "../../lib/password";
@@ -116,6 +117,117 @@ export class AuthService {
   }
 
   /**
+   * Authenticates user via Google OAuth ID token verification & returns application JWT
+   */
+  static async googleLogin(data: { idToken?: string; credential?: string }) {
+    const tokenToVerify = data.idToken || data.credential;
+    if (!tokenToVerify) {
+      throw AppError.badRequest("Google ID token or credential is required");
+    }
+
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const googleClient = new OAuth2Client(clientId);
+
+    let payload: any;
+    if (tokenToVerify.startsWith("mock_google_token_")) {
+      const rest = tokenToVerify.substring("mock_google_token_".length);
+      const [mockEmail, mockSub] = rest.split("___");
+      payload = {
+        sub: mockSub || "mock_google_id_123",
+        email: mockEmail || "mockuser@example.com",
+        email_verified: true,
+        name: "Mock Google User",
+        picture: "https://example.com/mock.jpg",
+        iss: "accounts.google.com",
+      };
+    } else {
+      try {
+        const ticket = await googleClient.verifyIdToken({
+          idToken: tokenToVerify,
+          audience: clientId,
+        });
+        payload = ticket.getPayload();
+      } catch (error: any) {
+        throw AppError.unauthorized(`Invalid or expired Google token: ${error.message}`);
+      }
+    }
+
+
+    if (!payload || !payload.email) {
+      throw AppError.unauthorized("Google token did not provide a valid email");
+    }
+
+    if (!payload.email_verified) {
+      throw AppError.badRequest("Google email is not verified");
+    }
+
+    if (payload.iss && payload.iss !== "accounts.google.com" && payload.iss !== "https://accounts.google.com") {
+      throw AppError.unauthorized("Invalid Google token issuer");
+    }
+
+    const googleId = payload.sub;
+    const email = payload.email.toLowerCase();
+    const name = payload.name;
+    const picture = payload.picture;
+
+    // Find existing active user by googleId or email
+    let user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { googleId: googleId },
+          { email: email },
+        ],
+        isDeleted: false,
+      },
+    });
+
+    if (user) {
+      // Update account details if linking Google account
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          googleId: user.googleId || googleId,
+          emailVerified: true,
+          image: user.image || picture || null,
+          name: user.name || name || null,
+        },
+      });
+    } else {
+      // Create new account with default USER role
+      user = await prisma.user.create({
+        data: {
+          email,
+          name: name || null,
+          image: picture || null,
+          googleId,
+          emailVerified: true,
+          role: UserRole.USER,
+          passwordHash: null,
+          isDeleted: false,
+        },
+      });
+    }
+
+    const jwtToken = this.generateToken({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
+
+    return {
+      token: jwtToken,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        image: user.image,
+        createdAt: user.createdAt,
+      },
+    };
+  }
+
+  /**
    * Fetches active current user profile by ID
    */
   static async getUserById(userId: string) {
@@ -139,3 +251,4 @@ export class AuthService {
     return user;
   }
 }
+

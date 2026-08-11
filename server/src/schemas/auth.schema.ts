@@ -15,5 +15,16 @@ export const registerSchema = z.object({
   }),
 });
 
+export const googleAuthSchema = z.object({
+  body: z.object({
+    idToken: z.string().optional(),
+    credential: z.string().optional(),
+  }).refine((data) => data.idToken || data.credential, {
+    message: "Google idToken or credential parameter is required",
+  }),
+});
+
 export type LoginInput = z.infer<typeof loginSchema>["body"];
 export type RegisterInput = z.infer<typeof registerSchema>["body"];
+export type GoogleAuthInput = z.infer<typeof googleAuthSchema>["body"];
+

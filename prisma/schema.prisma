@@ -37,6 +37,7 @@ model User {
   image         String?
   role          UserRole @default(USER)
   passwordHash  String?
+  googleId      String?  @unique
   isDeleted     Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

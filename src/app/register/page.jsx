@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -71,11 +72,13 @@ export default function RegisterPage() {
 
           <button
             disabled={loading}
-            className="w-full bg-black text-white py-3 rounded-xl hover:scale-[1.02] transition disabled:opacity-50"
+            className="w-full bg-black text-white py-3 rounded-xl hover:scale-[1.02] transition disabled:opacity-50 font-medium"
           >
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
+
+        <GoogleLoginButton onSuccessRedirect="/" />
 
         <p className="text-center mt-5 text-sm">
           Already have an account?

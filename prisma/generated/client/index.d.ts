@@ -1843,6 +1843,7 @@ export namespace Prisma {
     image: string | null
     role: $Enums.UserRole | null
     passwordHash: string | null
+    googleId: string | null
     isDeleted: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1856,6 +1857,7 @@ export namespace Prisma {
     image: string | null
     role: $Enums.UserRole | null
     passwordHash: string | null
+    googleId: string | null
     isDeleted: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1869,6 +1871,7 @@ export namespace Prisma {
     image: number
     role: number
     passwordHash: number
+    googleId: number
     isDeleted: number
     createdAt: number
     updatedAt: number
@@ -1884,6 +1887,7 @@ export namespace Prisma {
     image?: true
     role?: true
     passwordHash?: true
+    googleId?: true
     isDeleted?: true
     createdAt?: true
     updatedAt?: true
@@ -1897,6 +1901,7 @@ export namespace Prisma {
     image?: true
     role?: true
     passwordHash?: true
+    googleId?: true
     isDeleted?: true
     createdAt?: true
     updatedAt?: true
@@ -1910,6 +1915,7 @@ export namespace Prisma {
     image?: true
     role?: true
     passwordHash?: true
+    googleId?: true
     isDeleted?: true
     createdAt?: true
     updatedAt?: true
@@ -1996,6 +2002,7 @@ export namespace Prisma {
     image: string | null
     role: $Enums.UserRole
     passwordHash: string | null
+    googleId: string | null
     isDeleted: boolean
     createdAt: Date
     updatedAt: Date
@@ -2026,6 +2033,7 @@ export namespace Prisma {
     image?: boolean
     role?: boolean
     passwordHash?: boolean
+    googleId?: boolean
     isDeleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2045,6 +2053,7 @@ export namespace Prisma {
     image?: boolean
     role?: boolean
     passwordHash?: boolean
+    googleId?: boolean
     isDeleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2058,6 +2067,7 @@ export namespace Prisma {
     image?: boolean
     role?: boolean
     passwordHash?: boolean
+    googleId?: boolean
     isDeleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2071,12 +2081,13 @@ export namespace Prisma {
     image?: boolean
     role?: boolean
     passwordHash?: boolean
+    googleId?: boolean
     isDeleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "passwordHash" | "isDeleted" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "passwordHash" | "googleId" | "isDeleted" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -2105,6 +2116,7 @@ export namespace Prisma {
       image: string | null
       role: $Enums.UserRole
       passwordHash: string | null
+      googleId: string | null
       isDeleted: boolean
       createdAt: Date
       updatedAt: Date
@@ -2543,6 +2555,7 @@ export namespace Prisma {
     readonly image: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
     readonly passwordHash: FieldRef<"User", 'String'>
+    readonly googleId: FieldRef<"User", 'String'>
     readonly isDeleted: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -13046,6 +13059,7 @@ export namespace Prisma {
     image: 'image',
     role: 'role',
     passwordHash: 'passwordHash',
+    googleId: 'googleId',
     isDeleted: 'isDeleted',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -13320,6 +13334,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     passwordHash?: StringNullableFilter<"User"> | string | null
+    googleId?: StringNullableFilter<"User"> | string | null
     isDeleted?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -13338,6 +13353,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     role?: SortOrder
     passwordHash?: SortOrderInput | SortOrder
+    googleId?: SortOrderInput | SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13351,6 +13367,7 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    googleId?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -13367,7 +13384,7 @@ export namespace Prisma {
     cartItems?: CartItemListRelationFilter
     wishlistItems?: WishlistItemListRelationFilter
     reviews?: ReviewListRelationFilter
-  }, "id" | "email">
+  }, "id" | "email" | "googleId">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -13377,6 +13394,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     role?: SortOrder
     passwordHash?: SortOrderInput | SortOrder
+    googleId?: SortOrderInput | SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13396,6 +13414,7 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     passwordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
+    googleId?: StringNullableWithAggregatesFilter<"User"> | string | null
     isDeleted?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -14083,6 +14102,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14101,6 +14121,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14119,6 +14140,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14137,6 +14159,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14155,6 +14178,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14168,6 +14192,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14181,6 +14206,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15041,6 +15067,7 @@ export namespace Prisma {
     image?: SortOrder
     role?: SortOrder
     passwordHash?: SortOrder
+    googleId?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15054,6 +15081,7 @@ export namespace Prisma {
     image?: SortOrder
     role?: SortOrder
     passwordHash?: SortOrder
+    googleId?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15067,6 +15095,7 @@ export namespace Prisma {
     image?: SortOrder
     role?: SortOrder
     passwordHash?: SortOrder
+    googleId?: SortOrder
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16640,6 +16669,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16657,6 +16687,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16690,6 +16721,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16707,6 +16739,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16724,6 +16757,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16741,6 +16775,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16774,6 +16809,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16791,6 +16827,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16940,6 +16977,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16957,6 +16995,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17035,6 +17074,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17052,6 +17092,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17120,6 +17161,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17137,6 +17179,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17215,6 +17258,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17232,6 +17276,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17300,6 +17345,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17317,6 +17363,7 @@ export namespace Prisma {
     image?: string | null
     role?: $Enums.UserRole
     passwordHash?: string | null
+    googleId?: string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17395,6 +17442,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17412,6 +17460,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

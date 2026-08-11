@@ -45,6 +45,16 @@ export const authClient = {
     return { success: false, error: res.message || "Registration failed" };
   },
 
+  googleLogin: async (credential) => {
+    const res = await apiClient.post("/auth/google", { credential, idToken: credential });
+    if (res.success && res.data?.token) {
+      authClient.setToken(res.data.token);
+      return { success: true, user: res.data.user, token: res.data.token, message: res.message };
+    }
+    return { success: false, error: res.message || "Google authentication failed" };
+  },
+
+
   logout: async () => {
     const token = authClient.getToken();
     if (token) {
